@@ -29,23 +29,7 @@ class AppStartGameCommand extends ContainerAwareCommand
         /** @var \Symfony\Component\Console\Helper\QuestionHelper $helper */
         $helper = $this->getHelper('question');
 
-        $questionName = new Question('Please enter the name of your hero, name has to be unique: ', 'Batman');
-        $questionName->setNormalizer(function ($value) {
-            // $value can be null here
-            return $value ? trim($value) : '';
-        });
 
-        $questionName->setValidator(function ($answer) {
-            if (!is_string($answer) || 'Bundle' !== substr($answer, -6)) {
-                throw new \RuntimeException(
-                    'The name of the bundle should be suffixed with \'Bundle\''
-                );
-            }
-
-            return $answer;
-        });
-
-        $questionName->setMaxAttempts(3);
         $name = $helper->ask($input, $output, $questionName);
         if ($name) {
 

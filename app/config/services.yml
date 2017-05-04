@@ -6,7 +6,7 @@ parameters:
 services:
     app.game_question:
         class:     AppBundle\Utils\GameQuestion
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@validator']
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

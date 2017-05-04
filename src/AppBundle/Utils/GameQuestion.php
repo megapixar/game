@@ -2,16 +2,20 @@
 
 namespace AppBundle\Utils;
 
+use AppBundle\Entity\Hero;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GameQuestion
 {
     protected $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator)
     {
         $this->em = $em;
+        $this->validator = $validator;
     }
 
     public function getNameQuestion()
@@ -22,14 +26,10 @@ class GameQuestion
             return $value ? trim($value) : '';
         });
 
-        $questionName->setValidator(function ($answer) {
-            if (!is_string($answer) || 'Bundle' !== substr($answer, -6)) {
-                throw new \RuntimeException(
-                    'The name of the bundle should be suffixed with \'Bundle\''
-                );
-            }
+        $questionName->setValidator(function ($name) {
 
-            return $answer;
+            return !$this->em->getRepository(Hero::class)
+                ->findOneBy(['name' => $name]);
         });
     }
 }
