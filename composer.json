@@ -41,7 +41,9 @@
         "post-install-cmd": [
             "@symfony-scripts",
             "php bin/console doctrine:database:create --if-not-exists",
-            "php bin/console doctrine:schema:update --force"
+            "php bin/console doctrine:database:create --if-not-exists --env=test",
+            "php bin/console doctrine:schema:update --force",
+            "php bin/console doctrine:schema:update --force --env=test"
         ],
         "post-update-cmd": [
             "@symfony-scripts"

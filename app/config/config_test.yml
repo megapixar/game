@@ -14,3 +14,10 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        host: db-test
+        dbname: game_test
+        user: root
+        password: 123

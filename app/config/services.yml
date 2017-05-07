@@ -4,9 +4,15 @@ parameters:
     #parameter_name: value
 
 services:
-    app.game_question:
-        class:     AppBundle\Utils\GameQuestion
+    app.hero_factory:
+        class:     AppBundle\Utils\HeroFactory
         arguments: ['@doctrine.orm.entity_manager', '@validator']
+
+    app.command.my_command:
+            class: AppBundle\Command\CreateHeroCommand
+            arguments: ["@doctrine.orm.entity_manager", "@app.hero_factory"]
+            tags:
+                - { name: console.command }
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

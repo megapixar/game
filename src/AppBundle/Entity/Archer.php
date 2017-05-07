@@ -12,27 +12,5 @@ class Archer extends Hero
      */
     protected $discr = 'magician';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    protected $manaPoints;
-
-    /**
-     * @return int
-     */
-    public function getManaPoints(): int
-    {
-        return $this->manaPoints;
-    }
-
-    /**
-     * @param int $manaPoints
-     */
-    public function setManaPoints(int $manaPoints)
-    {
-        $this->manaPoints = $manaPoints;
-    }
 }
 

@@ -3,8 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -21,15 +21,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 abstract class Hero
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", nullable=false, unique=true)
@@ -40,7 +31,20 @@ abstract class Hero
      * )
      */
     protected $name;
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $healthPoints = 100;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
      * Get id

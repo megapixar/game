@@ -11,12 +11,5 @@ class Warrior extends Hero
      * @var string
      */
     protected $discr = 'warrior';
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    protected $armorPoints;
 }
 

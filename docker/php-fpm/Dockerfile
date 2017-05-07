@@ -10,6 +10,11 @@ RUN chown -R www-data:www-data /tmp
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
+# Install phpunit
+RUN curl -LsS https://phar.phpunit.de/phpunit.phar -o /usr/local/bin/phpunit \
+    && chmod a+x /usr/local/bin/phpunit \
+    && phpunit --version
+
 RUN apt-get install -y \
         libssl-dev \
         git\

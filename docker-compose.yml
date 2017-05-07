@@ -17,7 +17,7 @@ services:
             - 9000
         links:
             - db
-            - mailhog
+            - db-test
         restart: always
         volumes_from:
             - app
@@ -31,20 +31,25 @@ services:
         image: mysql:latest
         ports:
             - "3306:3306"
-        volumes:
-            - db-data:/var/lib/mysql
+        expose:
+            - 3306
         container_name: db
-        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: 123
             MYSQL_DATABASE: game
             MYSQL_USER: game
             MYSQL_PASSWORD: 123
-    mailhog:
-        image: mailhog/mailhog:latest
+    db-test:
+        image: mysql:latest
         ports:
-            - "8025:8025"
-            - "1025"
+            - 3307:3306
+        expose:
+            - 3307
+        container_name: db-test
+        environment:
+            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_DATABASE: game_test
+            MYSQL_USER: game_test
+            MYSQL_PASSWORD: 123
 volumes:
-  db-data:
   app:
