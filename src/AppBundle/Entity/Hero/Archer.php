@@ -11,6 +11,8 @@ class Archer extends Hero implements IHeroArcher
 {
     protected $discr = 'archer';
 
+    protected $type = 'Archer';
+
     /**
      * @var int
      *

@@ -15,6 +15,11 @@ services:
                 arguments: ["@doctrine.orm.entity_manager"]
                 tags:
                     - { name: console.command }
+    app.command.hero_stats:
+                class: AppBundle\Command\HeroStatsCommand
+                arguments: ["@doctrine.orm.entity_manager"]
+                tags:
+                    - { name: console.command }
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']

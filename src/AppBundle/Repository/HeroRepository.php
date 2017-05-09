@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Hero;
+
 /**
  * HeroRepository
  *
@@ -10,4 +12,18 @@ namespace AppBundle\Repository;
  */
 class HeroRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return Hero[]
+     */
+    public function findForStatistic()
+    {
+        return $this->createQueryBuilder('h')
+            ->select(['h.name', 'h.type', 'h.level', 'h.experience', 'h.health'])
+            ->addSelect("CONCAT(SUM(s.isWin), ' / ', COUNT(s.isWin)) as stats")
+            ->leftJoin("h.statistics", "s", "h.id = s.hero")
+            ->orderBy('h.experience', 'ASC')
+            ->groupBy('h.id')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

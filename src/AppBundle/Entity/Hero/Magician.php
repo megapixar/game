@@ -11,6 +11,8 @@ class Magician extends Hero implements IHeroMagician
 {
     protected $discr = 'magician';
 
+    protected $type = 'Magician';
+
     /**
      * @var int
      *

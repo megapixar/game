@@ -28,7 +28,7 @@ class Battle
 
     public function processBattle()
     {
-        while ($this->hero->getHealth() && $this->enemy->getHealth()) {
+        while ($this->hero->getHealth() > 0 && $this->enemy->getHealth() > 0) {
             $this->hero->makeDamage($this->enemy->getDamage());
             $this->addEnemyLog($this->enemy->getDamage(), $this->hero->getHealth());
 

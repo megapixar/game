@@ -13,14 +13,14 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class CreateHeroCommand extends Command
 {
-    protected $em;
+    protected $objectManager;
     protected $heroFactory;
 
     public function __construct(ObjectManager $objectManager)
     {
-        $this->em = $objectManager;
-
         parent::__construct();
+
+        $this->objectManager = $objectManager;
     }
 
     protected function configure()
@@ -38,7 +38,7 @@ class CreateHeroCommand extends Command
 
         $questionName = new UniqueNameQuestion(
             'Please enter the name of your hero: ', 'Batman',
-            $this->em->getRepository(Hero::class)
+            $this->objectManager->getRepository(Hero::class)
         );
 
         $name = $helper->ask($input, $output, $questionName);
@@ -65,7 +65,7 @@ class CreateHeroCommand extends Command
         ]);
         $hero = HeroStaticFactory::makeEntity($type, $name);
 
-        $this->em->persist($hero);
-        $this->em->flush();
+        $this->objectManager->persist($hero);
+        $this->objectManager->flush();
     }
 }

@@ -31,6 +31,13 @@ abstract class Hero
      */
     protected $name;
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     *
+     */
+    protected $type;
+    /**
      * One Product has Many Features.
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Statistic", mappedBy="hero", cascade={"persist"})
      */
@@ -172,5 +179,21 @@ abstract class Hero
     public function increaseExperience(int $experience)
     {
         $this->experience += $experience;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
     }
 }

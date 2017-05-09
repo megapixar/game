@@ -13,5 +13,7 @@ class Warrior extends Hero implements IHero
      * @var string
      */
     protected $discr = 'warrior';
+
+    protected $type = 'Warrior';
 }
 

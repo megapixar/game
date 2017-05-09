@@ -26,10 +26,10 @@ class StartGameCommand extends Command
      */
     public function __construct(ObjectManager $objectManager, HeroStaticFactory $heroFactory = null)
     {
+        parent::__construct();
+
         $this->objectManager = $objectManager;
         $this->heroFactory = $heroFactory;
-
-        parent::__construct();
     }
 
     protected function configure()
