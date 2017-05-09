@@ -2,10 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * Hero
@@ -14,7 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HeroRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"magician" = "Magician", "warrior" = "Warrior", "archer" = "Archer"})
+ * @ORM\DiscriminatorMap({
+ *     "magician" = "AppBundle\Entity\Hero\Magician",
+ *     "warrior" = "AppBundle\Entity\Hero\Warrior",
+ *     "archer" = "AppBundle\Entity\Hero\Archer"
+ * })
  *
  * @UniqueEntity("name")
  */
@@ -24,19 +27,32 @@ abstract class Hero
      * @var string
      *
      * @ORM\Column(type="string", nullable=false, unique=true)
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *      min = 3,
-     *      minMessage = "Your name must be at least {{ limit }} characters long",
-     * )
+     *
      */
     protected $name;
+    /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Statistic", mappedBy="hero", cascade={"persist"})
+     */
+    protected $statistics;
     /**
      * @var int
      *
      * @ORM\Column(type="integer")
      */
-    protected $healthPoints = 100;
+    protected $level = 1;
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $experience = 1;
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    protected $health = 0;
     /**
      * @var int
      *
@@ -45,6 +61,14 @@ abstract class Hero
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * Hero constructor.
+     */
+    public function __construct()
+    {
+        $this->statistics = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -71,5 +95,82 @@ abstract class Hero
     {
         $this->name = $name;
     }
-}
 
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     */
+    public function setLevel(int $level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * @param $enemyType
+     * @param $isWin
+     */
+    public function statistic($enemyType, $isWin)
+    {
+        $statistic = new Statistic();
+        $statistic->setEnemyType($enemyType)
+            ->setIsWin($isWin);
+        $statistic->setHero($this);
+
+        $this->statistics->add($statistic);
+    }
+
+    /**
+     * @return []
+     */
+    public function getStatistics()
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHealth(): float
+    {
+        return $this->health;
+    }
+
+    /**
+     * @param int $health
+     */
+    public function setHealth(int $health)
+    {
+        $this->health = $health;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    /**
+     * @param int $experience
+     */
+    public function setExperience(int $experience)
+    {
+        $this->experience = $experience;
+    }
+
+    /**
+     * @param int $experience
+     */
+    public function increaseExperience(int $experience)
+    {
+        $this->experience += $experience;
+    }
+}

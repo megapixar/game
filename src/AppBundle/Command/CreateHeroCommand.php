@@ -4,7 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Console\Question\UniqueNameQuestion;
 use AppBundle\Entity\Hero;
-use AppBundle\Utils\HeroFactory;
+use AppBundle\Service\HeroStaticFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +16,9 @@ class CreateHeroCommand extends Command
     protected $em;
     protected $heroFactory;
 
-    public function __construct(ObjectManager $em, HeroFactory $heroFactory = null)
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->em = $em;
-        $this->heroFactory = $heroFactory;
+        $this->em = $objectManager;
 
         parent::__construct();
     }
@@ -28,7 +27,7 @@ class CreateHeroCommand extends Command
     {
         $this
             ->setName('app:create-hero')
-            ->setDescription('...')
+            ->setDescription('Before start the game please create a hero')
             ->setHelp('This command will start the new game');
     }
 
@@ -49,19 +48,22 @@ class CreateHeroCommand extends Command
             '============',
         ]);
 
+        $heroes = HeroStaticFactory::getHeroLabels();
+
         $questionClass = new ChoiceQuestion(
             'Please select your hero class',
-            $this->heroFactory->getClassLabels()
+            $heroes
         );
 
-        $className = $helper->ask($input, $output, $questionClass);
+        $type = $helper->ask($input, $output, $questionClass);
 
         $output->writeln([
-            "Hello again <info>$className $name</info>!!",
+            "Hello again <info>{$heroes[$type]} $name</info>!!",
+            "Now you are ready for the game, just run",
+            "php bin/console app:start-game $name",
             '============',
         ]);
-
-        $hero = $this->heroFactory->makeByLabel($className, $name);
+        $hero = HeroStaticFactory::makeEntity($type, $name);
 
         $this->em->persist($hero);
         $this->em->flush();

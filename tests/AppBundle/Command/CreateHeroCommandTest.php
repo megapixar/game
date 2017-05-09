@@ -5,7 +5,7 @@ namespace Tests\AppBundle\Command;
 use AppBundle\Command\CreateHeroCommand;
 use AppBundle\Entity\Hero;
 use AppBundle\Repository\HeroRepository;
-use AppBundle\Utils\HeroFactory;
+use AppBundle\Service\HeroStaticFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -13,30 +13,36 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CreateHeroCommandTest extends KernelTestCase
 {
-
-    public function testExecute()
+    /**
+     * @dataProvider listTypes
+     */
+    public function testExecute($type)
     {
         self::bootKernel();
         $name = 'Test Name';
 
+        $entityManager = $this->getMockRepository(null);
+        $entityManager->expects($this->once())
+            ->method('persist');
+        $entityManager->expects($this->once())
+            ->method('flush');
+
         $application = new Application(self::$kernel);
-        $heroFactory = new HeroFactory();
-        $command = new CreateHeroCommand($this->getMockRepository(null), $heroFactory);
+
+        $command = new CreateHeroCommand($entityManager);
         $application->add($command);
 
         $commandTester = new CommandTester($command);
 
         $commandTester
-            ->setInputs([$name, HeroFactory::MAGICIAN_ID])
+            ->setInputs([$name, $type])
             ->execute([
                 'command' => $command->getName(),
             ]);
 
         $this->assertContains("Hello $name!!", $commandTester->getDisplay());
 
-        $class = $heroFactory->getClassLabels()[HeroFactory::MAGICIAN_ID];
-
-        $this->assertContains("Hello again $class $name!!", $commandTester->getDisplay());
+        $this->assertContains("Hello again", $commandTester->getDisplay());
     }
 
     protected function getMockRepository($value)
@@ -62,22 +68,29 @@ class CreateHeroCommandTest extends KernelTestCase
         return $entityManager;
     }
 
+    public function listTypes()
+    {
+        return [
+            [HeroStaticFactory::MAGICIAN],
+            [HeroStaticFactory::ARCHER],
+            [HeroStaticFactory::WARRIOR],
+        ];
+    }
+
     public function testExecuteNotUniqueName()
     {
         self::bootKernel();
         $name = 'Test Name';
 
         $application = new Application(self::$kernel);
-        $heroFactory = new HeroFactory();
         $command = new CreateHeroCommand(
-            $this->getMockRepository($this->createMock(Hero::class)),
-            $heroFactory);
+            $this->getMockRepository($this->createMock(Hero::class)));
         $application->add($command);
 
         $commandTester = new CommandTester($command);
         try {
             $commandTester
-                ->setInputs([$name, HeroFactory::MAGICIAN_ID])
+                ->setInputs([$name, HeroStaticFactory::MAGICIAN])
                 ->execute([
                     'command' => $command->getName(),
                 ]);
