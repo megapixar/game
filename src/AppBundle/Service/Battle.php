@@ -32,8 +32,10 @@ class Battle
             $this->hero->makeDamage($this->enemy->getDamage());
             $this->addEnemyLog($this->enemy->getDamage(), $this->hero->getHealth());
 
-            $this->enemy->makeDamage($this->hero->getDamage());
-            $this->addHeroLog($this->hero->getDamage(), $this->hero->getHealth());
+            if ($this->hero->getHealth()) {
+                $this->enemy->makeDamage($this->hero->getDamage());
+                $this->addHeroLog($this->hero->getDamage(), $this->hero->getHealth());
+            }
         }
 
         $this->setIsHeroWin($this->hero->getHealth());

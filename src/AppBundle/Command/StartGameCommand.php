@@ -90,5 +90,14 @@ class StartGameCommand extends Command
         foreach ($battle->getLogs() as $log) {
             $output->writeln($log);
         }
+        $text = $battle->isHeroWin()
+            ? "<fg=red;options=bold>Congratulations</> You killed the {$enemyFighter->getType()}"
+            : "No worry you can try next time";
+
+        $output->writeln([
+            '',
+            $text,
+            "============",
+        ]);
     }
 }
