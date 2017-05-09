@@ -27,10 +27,8 @@ class CreateHeroCommandTest extends KernelTestCase
         $entityManager->expects($this->once())
             ->method('flush');
 
-        $application = new Application(self::$kernel);
-
         $command = new CreateHeroCommand($entityManager);
-        $application->add($command);
+        (new Application(self::$kernel))->add($command);
 
         $commandTester = new CommandTester($command);
 

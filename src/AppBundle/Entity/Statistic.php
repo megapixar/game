@@ -80,7 +80,7 @@ class Statistic
      *
      * @return bool
      */
-    public function getIsWin()
+    public function isWin()
     {
         return $this->isWin;
     }

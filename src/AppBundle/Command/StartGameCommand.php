@@ -56,8 +56,6 @@ class StartGameCommand extends Command
             return;
         }
 
-        $enemyFighter = EnemyStaticFactory::createRandom();
-
         if (!$heroEntity->getHealth()) {
             $output->writeln([
                 "============",
@@ -67,6 +65,8 @@ class StartGameCommand extends Command
 
             return;
         }
+
+        $enemyFighter = EnemyStaticFactory::createRandom();
 
         $heroFighter = HeroStaticFactory::createFromEntity($heroEntity);
 

@@ -6,7 +6,7 @@ use AppBundle\Service\AbstractFighter;
 
 class Zombie extends AbstractFighter
 {
-    protected $health = 25;
+    protected $health = 20;
 
     public function getType(): string
     {

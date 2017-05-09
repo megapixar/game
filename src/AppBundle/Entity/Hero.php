@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * Hero
  *
- * @ORM\Table(name="hero")
+ * @ORM\Table(name="heroes")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HeroRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
@@ -53,7 +53,7 @@ abstract class Hero
      *
      * @ORM\Column(type="integer")
      */
-    protected $experience = 1;
+    protected $experience = 0;
     /**
      * @var int
      *

@@ -51,7 +51,7 @@ class HeroStaticFactory
             throw new \RuntimeException('This class isn\'t supported yet');
         }
 
-        switch (self::$heroClasses[$type]) {
+        switch ($type) {
             case self::MAGICIAN:
                 $hero = new Magician();
                 Hero\Magician::setInitialState($hero);

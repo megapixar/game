@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 /** @ORM\Entity */
 class Magician extends Hero implements IHeroMagician
 {
-    protected $discr = 'magician';
-
     protected $type = 'Magician';
 
     /**
